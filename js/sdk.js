@@ -139,7 +139,7 @@ const SDK = {
           `);
         } else {
           $(".navbar-right").html(`
-            <li><a href="login.html">Log-in <span class="sr-only">(current)</span></a></li>
+            <li><a href="login.html">Log ind <span class="sr-only">(current)</span></a></li>
           `);
         }
         $("#logout-link").click(() => SDK.User.logOut());

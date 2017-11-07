@@ -56,6 +56,7 @@ $(document).ready(() => {
     $("#purchase-modal").on("shown.bs.modal", () => {
       const basket = SDK.Storage.load("basket");
       const $modalTBody = $("#modal-tbody");
+      $modalTBody.html("");
       basket.forEach((entry) => {
           $modalTBody.append(`
             <tr>
