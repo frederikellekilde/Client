@@ -204,7 +204,7 @@ th {
   }
   a[href]:after {
     content: " (" attr(href) ")";
-  }
+  }col-lg-12
   abbr[title]:after {
     content: " (" attr(title) ")";
   }
@@ -4960,6 +4960,7 @@ a.badge:focus {
   padding-bottom: 30px;
   margin-bottom: 30px;
   color: inherit;
+  background-image: url("food.jpg");
   background-color: #eee;
 }
 .jumbotron h1,
