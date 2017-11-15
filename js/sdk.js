@@ -1,5 +1,5 @@
 const SDK = {
-  serverURL: "http://localhost:8080/api/",
+  serverURL: "http://localhost:8080/api",
   request: (options, cb) => {
 
     let headers = {};
@@ -25,27 +25,27 @@ const SDK = {
     });
 
   },
-  Book: {
-    addToBasket: (book) => {
+  Item: {
+    addToBasket: (item) => {
       let basket = SDK.Storage.load("basket");
 
       //Has anything been added to the basket before?
       if (!basket) {
         return SDK.Storage.persist("basket", [{
           count: 1,
-          book: book
+          item: item
         }]);
       }
 
-      //Does the book already exist?
-      let foundBook = basket.find(b => b.book.id === book.id);
-      if (foundBook) {
-        let i = basket.indexOf(foundBook);
+      //Does the item already exist?
+      let foundItem = basket.find(b => b.item.id === item.id);
+      if (foundItem) {
+        let i = basket.indexOf(foundItem);
         basket[i].count++;
       } else {
         basket.push({
           count: 1,
-          book: book
+          item: item
         });
       }
 
@@ -54,10 +54,10 @@ const SDK = {
     findAll: (cb) => {
       SDK.request({
         method: "GET",
-        url: "/books",
+        url: "/user/getItems",
         headers: {
           filter: {
-            include: ["authors"]
+            //include: ["authors"]
           }
         }
       }, cb);
@@ -96,13 +96,18 @@ const SDK = {
     }
   },
   User: {
-    findAll: (cb) => {
-      SDK.request({method: "GET", url: "/start"}, cb);
-    },
     current: () => {
       return SDK.Storage.load("user");
     },
-    logOut: () => {
+    logOut: (userId, token, cb) => {
+      SDK.request({
+          method: "POST",
+          url: "/start/logout",
+          headers: {authorization: }
+
+
+
+      })
       SDK.Storage.remove("tokenId");
       SDK.Storage.remove("userId");
       SDK.Storage.remove("user");
@@ -114,17 +119,17 @@ const SDK = {
           username: username,
           password: password
         },
-        url: "/start/login?include=user",
+        url: "/start/login",
         method: "POST"
       }, (err, data) => {
 
         //On login-error
         if (err) return cb(err);
-
         SDK.Storage.persist("tokenId", data.id);
         SDK.Storage.persist("userId", data.userId);
         SDK.Storage.persist("user", data.user);
-
+          //localStorage.setItem("test", data);
+          //localStorage.getItem("test");
         cb(null, data);
 
       });
@@ -134,12 +139,12 @@ const SDK = {
         const currentUser = SDK.User.current();
         if (currentUser) {
           $(".navbar-right").html(`
-            <li><a href="my-page.html">Your orders</a></li>
-            <li><a href="#" id="logout-link">Logout</a></li>
+            <li><a href="my-page.html">Mine ordrer</a></li>
+            <li><a href="#" id="logout-link">Log ud</a></li>
           `);
         } else {
           $(".navbar-right").html(`
-            <li><a href="login.html">Log ind <span class="sr-only">(current)</span></a></li>
+            <li><a href="login.html">Log ind<span class="sr-only">(current)</span></a></li>
           `);
         }
         $("#logout-link").click(() => SDK.User.logOut());

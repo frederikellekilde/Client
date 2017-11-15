@@ -8,10 +8,6 @@ $(document).ready(() => {
     <h1>Hi, ${currentUser.firstName} ${currentUser.lastName}</h1>
   `);
 
-  $(".img-container").html(`
-    <img src="${currentUser.avatarUrl}" height="150"/>
-  `);
-
   $(".profile-info").html(`
     <dl>
         <dt>Name</dt>
