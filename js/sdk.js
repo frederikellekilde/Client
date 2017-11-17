@@ -9,6 +9,8 @@ const SDK = {
       });
     }
 
+
+
     $.ajax({
       url: SDK.serverURL + options.url,
       method: options.method,
@@ -99,15 +101,7 @@ const SDK = {
     current: () => {
       return SDK.Storage.load("user");
     },
-    logOut: (userId, token, cb) => {
-      SDK.request({
-          method: "POST",
-          url: "/start/logout",
-          headers: {authorization: }
-
-
-
-      })
+    logOut: () => {
       SDK.Storage.remove("tokenId");
       SDK.Storage.remove("userId");
       SDK.Storage.remove("user");
@@ -128,7 +122,7 @@ const SDK = {
         SDK.Storage.persist("tokenId", data.id);
         SDK.Storage.persist("userId", data.userId);
         SDK.Storage.persist("user", data.user);
-          //localStorage.setItem("test", data);
+          localStorage.setItem("test", data);
           //localStorage.getItem("test");
         cb(null, data);
 
@@ -153,7 +147,7 @@ const SDK = {
     }
   },
   Storage: {
-    prefix: "BookStoreSDK",
+    prefix: "YoloSDK",
     persist: (key, value) => {
       window.localStorage.setItem(SDK.Storage.prefix + key, (typeof value === 'object') ? JSON.stringify(value) : value)
     },

@@ -4,8 +4,9 @@ $(document).ready(() => {
   const currentUser = SDK.User.current();
   const $basketTbody = $("#basket-tbody");
 
+
   $(".page-header").html(`
-    <h1>Hi, ${currentUser.firstName} ${currentUser.lastName}</h1>
+    <h1>Hi, ${currentUser.username} ${currentUser.lastName}</h1>
   `);
 
   $(".profile-info").html(`
@@ -45,6 +46,5 @@ $(document).ready(() => {
     });
     return total;
   }
-
 
 });
