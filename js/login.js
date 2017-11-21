@@ -2,13 +2,15 @@ $(document).ready(() => {
 
   SDK.User.loadNav();
 
-  $("#login-button").click(() => {
+  $("#login-button").click((event) => {
+
+    event.preventDefault();
 
     const username = $("#inputUsername").val();
     const password = $("#inputPassword").val();
 
     SDK.User.login(username, password, (err, data) => {
-      if (err ) {
+      if (err) {
         $(".form-group").addClass("has-error");
       }
       else if (err){

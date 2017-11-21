@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <link rel="stylesheet" href="lib/css/bootstrap.css">
+    <link rel="stylesheet" href="css/main.css">
+
+    <meta charset="UTF-8">
+    <title>Opret bruger</title>
+
+</head>
+<body>
+
+<div class="container">
+
+    <div class="row" id="nav-container"></div>
+
+    <div class="row">
+
+        <div class="col-lg-6">
+            <div class="page-header">
+                <h1>Opret bruger</h1>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="newInputUsername">Brugernavn</label>
+                <input type="text" class="form-control" id="newInputUsername" placeholder="Brugernavn">
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="newInputPassword">Password</label>
+                <input type="password" class="form-control" id="newInputPassword" placeholder="Password">
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="verifyPassword">Gentag Password</label>
+                <input type="password" class="form-control" id="verifyPassword" placeholder="Password">
+            </div>
+            <button style="margin-bottom: 40px" class="btn btn-default" id="createUser-button">Opret bruger</button>
+        </div>
+
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p class="text-muted">2017 © All rights reserved - YOLO</p>
+    </div>
+</footer>
+
+<script src="lib/js/jquery-3.2.1.js"></script>
+<script src="lib/js/bootstrap.js"></script>
+<script src="js/sdk.js"></script>
+<script src="js/createUser.js"></script>
+
+</body>
+</html>

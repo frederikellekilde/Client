@@ -6,43 +6,45 @@ $(document).ready(() => {
 
 
   $(".page-header").html(`
-    <h1>Hi, ${currentUser.username} ${currentUser.lastName}</h1>
+    <h1>Hi, ${currentUser.username}</h1>
   `);
 
   $(".profile-info").html(`
     <dl>
-        <dt>Name</dt>
-        <dd>${currentUser.firstName} ${currentUser.lastName}</dd>
-        <dt>Email</dt>
-        <dd>${currentUser.email}</dd>
+        <dt>Username</dt>
+        <dd>${currentUser.username}</dd>
         <dt>ID</dt>
-        <dd>${currentUser.id}</dd>
+        <dd>${currentUser.user_id}</dd>
      </dl>
   `);
+
 
   SDK.Order.findMine((err, orders) => {
     if(err) throw err;
     orders.forEach(order => {
-      $basketTbody.append(`
+      for(let i = 0; i < order.items.length; i++) {
+
+       $basketTbody.append(`
         <tr>
-            <td>${order.id}</td>
-            <td>${parseOrderItems(order.orderItems)}</td>
-            <td>kr. ${sumTotal(order.orderItems)}</td>
+            <td>${order.orderId}</td>
+            <td>${order.items[i].itemName}</td>
+            <td>${order.items[i].itemPrice}</td>
         </tr>
       `);
+      }
     });
   });
 
   function parseOrderItems(items){
     return items.map(item => {
-      return item.count + " x " + item.bookInfo.title
+      return item.count + " x " + item.itemInfo.title
     }).join(", ");
   }
 
   function sumTotal(items){
     let total = 0;
     items.forEach(item => {
-      total += item.count * item.bookInfo.price
+      total += item.count * item.itemInfo.price
     });
     return total;
   }
