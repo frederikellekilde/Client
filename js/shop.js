@@ -6,8 +6,6 @@ $(document).ready(() => {
   SDK.Item.findAll((err,items) => {
       items.forEach((item) => {
 
-          console.log(item);
-
         const itemHtml = `
           <div class="col-lg-4 book-container">
               <div class="panel panel-default">

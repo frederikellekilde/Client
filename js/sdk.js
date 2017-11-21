@@ -84,9 +84,25 @@ const SDK = {
         current: () => {
             return JSON.parse(localStorage.getItem("user"));
         },
-        logOut: () => {
-           localStorage.removeItem("user");
-           window.location.href = "index.html";
+        logOut: (user_id, cb) => {
+            SDK.request({
+                data:{
+                    user_id: SDK.User.current().user_id
+                },
+                method: "POST",
+                url: "/start/logout",
+                headers: {
+                    authorization: "Bearer " + SDK.User.current().token
+                }
+            }, (err, data) => {
+              if (err) return cb(err);
+              cb(null, data);
+
+            });
+
+            localStorage.removeItem("user");
+            window.location.href = "index.html";
+            
         },
         login: (username, password, cb) => {
             SDK.request({
