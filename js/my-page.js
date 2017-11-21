@@ -22,13 +22,14 @@ $(document).ready(() => {
   SDK.Order.findMine((err, orders) => {
     if(err) throw err;
     orders.forEach(order => {
+
       for(let i = 0; i < order.items.length; i++) {
 
        $basketTbody.append(`
         <tr>
             <td>${order.orderId}</td>
             <td>${order.items[i].itemName}</td>
-            <td>${order.items[i].itemPrice}</td>
+            <td>${order.items[i].itemPrice + " kr"}</td>
         </tr>
       `);
       }

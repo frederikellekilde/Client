@@ -56,9 +56,7 @@ const SDK = {
                 method: "GET",
                 url: "/user/getItems",
                 headers: {
-                    filter: {
-                        include: ["authors"]
-                    }
+                    authorization: "Bearer " + SDK.User.current().token
                 }
             }, cb);
         },
@@ -77,7 +75,7 @@ const SDK = {
                 method: "GET",
                 url: "/user/getOrdersById/" + SDK.User.current().user_id,
                 headers: {
-                    authorization:  "Bearer " + SDK.User.current().token,
+                    authorization: "Bearer " + SDK.User.current().token
                 }
             }, cb);
         }
@@ -99,8 +97,6 @@ const SDK = {
                 url: "/start/login",
                 method: "POST"
             }, (err, data) => {
-
-                //console.log('tester', err, data)
 
                 //On login-error
                 if (err) return cb(err);
