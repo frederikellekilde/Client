@@ -38,7 +38,7 @@ const SDK = {
             }
 
             //Does the item already exist?
-            let foundItem = basket.find(b => b.item.id === item.id);
+            let foundItem = basket.find(i => i.item.itemId === item.itemId);
             if (foundItem) {
                 let i = basket.indexOf(foundItem);
                 basket[i].count++;
@@ -51,6 +51,22 @@ const SDK = {
 
             SDK.Storage.persist("basket", basket);
         },
+
+        removeFromBasket: (itemId) => {
+            let basket = SDK.Storage.load("basket");
+            for (let i = 0; i<basket.length; i++){
+                if (basket[i].item.itemId === itemId){
+                    if (basket[i].count > 1){
+                        basket[i].count--;
+                    }
+                    else{
+                        basket.splice(i, 1);
+                    }
+                }
+            }
+            SDK.Storage.persist("basket", basket);
+        },
+
         findAll: (cb) => {
             SDK.request({
                 method: "GET",
@@ -61,15 +77,26 @@ const SDK = {
             }, cb);
         },
     },
+
     Order: {
-        create: (data, cb) => {
+        create: (items, cb) => {
             SDK.request({
                 method: "POST",
                 url: "/user/createOrder",
-                data: data,
-                headers: {authorization: SDK.Storage.load("token")}
-            }, cb);
+                data:
+                    {
+                        User_userId: SDK.User.current().user_id,
+                        items: items
+                    },
+                headers: {
+                    authorization: "Bearer " + SDK.User.current().token
+                }
+            }, (err, data) => {
+                if (err) return cb(err);
+                cb(null, data);
+            })
         },
+
         findMine: (cb) => {
             SDK.request({
                 method: "GET",
@@ -78,8 +105,19 @@ const SDK = {
                     authorization: "Bearer " + SDK.User.current().token
                 }
             }, cb);
+        },
+
+        findAll: (cb) => {
+            SDK.request({
+                method: "GET",
+                url: "/staff/getOrders",
+                headers: {
+                    authorization: "Bearer " + SDK.User.current().token
+                }
+            }, cb);
         }
     },
+
     User: {
         current: () => {
             return JSON.parse(localStorage.getItem("user"));
@@ -101,6 +139,7 @@ const SDK = {
             });
 
             localStorage.removeItem("user");
+            SDK.Storage.remove("basket")
             window.location.href = "index.html";
             
         },
@@ -156,8 +195,19 @@ const SDK = {
                 }
                 $("#logout-link").click(() => SDK.User.logOut());
             });
+        },
+
+        loadStaffNav: () => {
+            $("#nav-container").load("staffNav.html", () => {
+                const currentUser = SDK.User.current();
+                    $(".navbar-right").html(`
+                    <li><a href="#" id="logout-link">Log ud</a></li>
+      `);
+                $("#logout-link").click(() => SDK.User.logOut());
+            });
         }
     },
+
     Storage: {
         prefix: "YoloSDK",
         persist: (key, value) => {

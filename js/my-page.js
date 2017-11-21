@@ -36,18 +36,4 @@ $(document).ready(() => {
     });
   });
 
-  function parseOrderItems(items){
-    return items.map(item => {
-      return item.count + " x " + item.itemInfo.title
-    }).join(", ");
-  }
-
-  function sumTotal(items){
-    let total = 0;
-    items.forEach(item => {
-      total += item.count * item.itemInfo.price
-    });
-    return total;
-  }
-
 });

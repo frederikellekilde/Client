@@ -17,10 +17,19 @@ $(document).ready(() => {
         console.log("Bad stuff happened")
 
       } else {
-        window.location.href = "my-page.html";
+          loadUser();
       }
     });
 
   });
+
+  loadUser = () => {
+    if(SDK.User.current().isPersonel) {
+        window.location.href = "staff.html";
+    } else {
+        window.location.href = "my-page.html";
+    }
+
+  }
 
 });

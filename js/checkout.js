@@ -21,16 +21,16 @@ $(document).ready(() => {
     }
 
     basket.forEach(entry => {
-      let subtotal = entry.book.price * entry.count;
+      let subtotal = entry.item.itemPrice * entry.count;
       total += subtotal;
       $modalTbody.append(`
         <tr>
             <td>
-                <img src="${entry.book.imgUrl}" height="120"/>
+                <img src="${entry.item.itemUrl}" height="120"/>
             </td>
-            <td>${entry.book.title}</td>
+            <td>${entry.item.itemName}</td>
             <td>${entry.count}</td>
-            <td>kr. ${entry.book.price}</td>
+            <td>kr. ${entry.item.itemPrice}</td>
             <td>kr. ${subtotal}</td>
         </tr>
       `);
@@ -46,7 +46,7 @@ $(document).ready(() => {
 
     if (currentUser) {
       $checkoutActions.append(`
-      <button class="btn btn-success btn-lg" id="checkout-button">Checkout</button>
+      <button class="btn btn-success btn-lg" id="checkout-button">Køb</button>
     `);
     }
     else {
@@ -65,23 +65,21 @@ $(document).ready(() => {
     loadBasket();
   });
 
-  $("#checkout-button").click(() => {
-    const basket = SDK.Storage.load("basket");
-    SDK.Order.create({
-      createdById: SDK.User.current().id,
-      orderItems: basket.map(orderItem => {
-        return {
-          count: orderItem.count,
-          bookId: orderItem.book.id
+    $("#checkout-button").click(() => {
+        const basket = SDK.Storage.load("basket");
+        const selectedItems = [];
+        for(let i = 0; i<basket.length; i++){
+            for(let j = 0; j<basket[i].count; j++){
+                selectedItems.push(basket[i].item);
+            }
         }
-      })
-    }, (err, order) => {
-      if (err) throw err;
-      $("#order-alert-container").find(".alert-success").show();
-      SDK.Storage.remove("basket");
-      loadBasket();
-      $nothingInBasketContainer.hide();
+        SDK.Order.create(selectedItems, (err) => {
+            if (err) throw err;
+            $("#order-alert-container").find(".alert-success").show();
+            SDK.Storage.remove("basket");
+            loadBasket();
+            $nothingInBasketContainer.hide();
+        });
     });
-  });
 
 });

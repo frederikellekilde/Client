@@ -26,10 +26,10 @@ $(document).ready(() => {
                   <div class="panel-footer">
                       <div class="row">
                           <div class="col-lg-4 price-label">
-                              <p>Kr. <span class="price-amount">${item.itemPrice}</span></p>
+                              <p><span class="price-amount">${item.itemPrice} kr.</span></p>
                           </div>
                           <div class="col-lg-8 text-right">
-                              <button class="btn btn-success purchase-button" data-item-id="${item.itemId}">Add to basket</button>
+                              <button class="btn btn-success purchase-button" data-item-id="${item.itemId}">Læg i kurv</button>
                           </div>
                       </div>
                   </div>
@@ -40,31 +40,43 @@ $(document).ready(() => {
 
       });
 
-      $(".purchase-button"). click(function() {
-        $("#purchase-modal").modal("toggle");
+      $(".purchase-button").click(function() {
         const itemId = $(this).data("item-id");
-        const item = items.find((item) => item.id === itemId);
+        const item = items.find((item) => item.itemId === itemId);
         SDK.Item.addToBasket(item);
+        $("#purchase-modal").modal("toggle");
       });
-
   });
 
     $("#purchase-modal").on("shown.bs.modal", () => {
       const basket = SDK.Storage.load("basket");
       const $modalTBody = $("#modal-tbody");
-      $modalTBody.html("");
+      $modalTBody.empty();
       basket.forEach((entry) => {
+          const total = entry.item.itemPrice * entry.count;
           $modalTBody.append(`
             <tr>
                 <td>
-                    <!--<img src="$//{entry.item.imgUrl}" height="60"/> -->
+                   <img src="${entry.item.itemUrl}" height="60"/>
                 </td>
-                <td>${entry.items.itemName}</td>
+                <td>${entry.item.itemName}</td>
                 <td>${entry.count}</td>
-                <td>kr. ${entry.items.itemPrice}</td>
-                <td>kr. 0</td>
+                <td>${entry.item.itemPrice} kr.</td>
+                <td>${total} kr.</td>
+                <td>
+                <button class="btn btn-default remove-icon" data-item-id="${entry.item.itemId}">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
+                </td>
+                
             </tr>
           `);
+        });
+
+        $(".remove-icon").click(function(){
+            const itemId = $(this).data("item-id");
+            SDK.Item.removeFromBasket(itemId);
+            $("#purchase-modal").modal("toggle");
         });
 
     });
