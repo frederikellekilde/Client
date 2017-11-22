@@ -1,15 +1,16 @@
 $(document).ready(() => {
 
-    SDK.User.loadStaffNav();
+    SDK.User.loadNav();
     const currentUser = SDK.User.current();
     const $basketTbody = $("#basket-tbody");
 
+    if(currentUser) {
 
-    $(".page-header").html(`
+        $(".page-header").html(`
     <h1>Welcome to staff page</h1>
   `);
 
-    $(".profile-info").html(`
+        $(".profile-info").html(`
     <dl>
         <dt>Username</dt>
         <dd>${currentUser.username}</dd>
@@ -19,21 +20,25 @@ $(document).ready(() => {
   `);
 
 
-    SDK.Order.findAll((err, orders) => {
-        if(err) throw err;
-        orders.forEach(order => {
+        SDK.Order.findAll((err, orders) => {
+            if (err) throw err;
+            orders.forEach(order => {
 
-            for(let i = 0; i < order.items.length; i++) {
+                for (let i = 0; i < order.items.length; i++) {
 
-                $basketTbody.append(`
+                    $basketTbody.append(`
         <tr>
             <td>${order.orderId}</td>
             <td>${order.items[i].itemName}</td>
             <td>${order.items[i].itemPrice + " kr"}</td>
         </tr>
       `);
-            }
+                }
+            });
         });
-    });
+
+    } else {
+        window.location.href = "login.html";
+    }
 
 });

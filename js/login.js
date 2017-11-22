@@ -27,7 +27,7 @@ $(document).ready(() => {
     if(SDK.User.current().isPersonel) {
         window.location.href = "staff.html";
     } else {
-        window.location.href = "my-page.html";
+        window.location.href = "shop.html";
     }
 
   }

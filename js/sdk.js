@@ -184,28 +184,31 @@ const SDK = {
             $("#nav-container").load("nav.html", () => {
                 const currentUser = SDK.User.current();
                 if (currentUser) {
-                    $(".navbar-right").html(`
-                    <li><a href="my-page.html">Min side</a></li>
-                    <li><a href="#" id="logout-link">Log ud</a></li>
+                    if(!SDK.User.current().isPersonel) {
+                        $(".navbar-left").html(`
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="checkout.html">Kurv</a></li>
       `);
+
+                        $(".navbar-right").html(`
+                        <li><a href="my-page.html">Min side</a></li>
+                        <li><a href="#" id="logout-link">Log ud</a></li>
+      `);
+                    } else {
+                        $(".navbar-right").html(`
+                        <li><a href="#" id="logout-link">Log ud</a></li>
+      `);
+                    }
+
                 } else {
                     $(".navbar-right").html(`
                     <li><a href="login.html">Log ind<span class="sr-only">(current)</span></a></li>
       `);
-                }
-                $("#logout-link").click(() => SDK.User.logOut());
-            });
-        },
-
-        loadStaffNav: () => {
-            $("#nav-container").load("staffNav.html", () => {
-                const currentUser = SDK.User.current();
-                    $(".navbar-right").html(`
-                    <li><a href="#" id="logout-link">Log ud</a></li>
-      `);
-                $("#logout-link").click(() => SDK.User.logOut());
+                    }
+                    $("#logout-link").click(() => SDK.User.logOut());
             });
         }
+
     },
 
     Storage: {

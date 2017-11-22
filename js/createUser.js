@@ -8,18 +8,26 @@ $(document).ready(() => {
 
         const username = $("#newInputUsername").val();
         const password = $("#newInputPassword").val();
+        const verifyPassword = $("#verifyPassword").val();
 
-        SDK.User.create(username, password, (err, data) => {
-            if (err) {
-                $(".form-group").addClass("has-error");
-            }
-            else if (err){
-                console.log("Error")
+        if(password !== verifyPassword) {
+            alert(" De to passwords skal matche!");
 
-            } else {
-                window.location.href = "login.html";
-            }
-        });
+        } else {
+
+            SDK.User.create(username, password, (err, data) => {
+                if (err) {
+                    $(".form-group").addClass("has-error");
+                }
+                else if (err){
+                    console.log("Error")
+
+                } else {
+                    window.location.href = "my-page.html";
+                }
+            });
+
+        }
 
     });
 
