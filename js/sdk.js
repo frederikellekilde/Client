@@ -121,10 +121,16 @@ const SDK = {
             SDK.request({
               method: "POST",
               url: "/staff/makeReady/" + orderId,
+              data: {
+                  orderId: orderId
+              },
               headers: {
                   authorization: "Bearer " + SDK.User.current().token
                 }
-            }, cb);
+            }, (err, data) => {
+                if (err) return cb(err);
+                cb(null, data);
+            });
         }
     },
 

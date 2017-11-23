@@ -6,22 +6,19 @@ $(document).ready(() => {
 
     SDK.Order.findAll((err, orders) => {
         if (err) throw err;
-/*
+
         function isOrderReady(order) {
             return order.isReady === false;
         }
 
         let unReadyOrders = orders.filter(isOrderReady);
-
-        */
-
-        orders.forEach((order) => {
+        unReadyOrders.forEach((order) => {
             let $items = "";
             for (let i = 0; i < order.items.length; i++) {
                 $items += order.items[i].itemName + " " + order.items[i].itemPrice + " kr" + "<br>";
             }
 
-            console.log(order);
+            //console.log(order);
 
             const orderHtml = `
             <div class="col-lg-4 books-container">
@@ -37,7 +34,7 @@ $(document).ready(() => {
                                 <dt>Varer</dt>
                                 <dd>${$items}</dd>
                             </dl>
-                            <button class="btn btn-success orderReady-button" data-item-id="${order.orderId}">Ordre klar</button>
+                            <button class="btn btn-success orderReady-button" data-order-id="${order.orderId}">Ordre klar</button>
                         </div>
                     </div>
                 </div>
@@ -47,7 +44,14 @@ $(document).ready(() => {
 
         });
 
-
-    });
+        $(".orderReady-button").click(function () {
+            const orderId = $(this).data("order-id");
+            const order = orders.find((order) => order.orderId === orderId);
+            SDK.Order.makeReady(order.orderId, (err) => {
+                if (err) throw err;
+                window.location.reload();
+            });
+        });
+    })
 
 });
