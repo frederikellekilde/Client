@@ -44,12 +44,12 @@ $(document).ready(() => {
           });
 
           $modalTbody.append(`
-      <tr>
-        <td colspan="3"></td>
-        <td><b>Total</b></td>
-        <td>${total} kr.</td>
-        <td></td>
-      </tr>
+          <tr>
+            <td colspan="3"></td>
+            <td><b>Total</b></td>
+            <td>${total} kr.</td>
+            <td></td>
+          </tr>
     `);
 
       }

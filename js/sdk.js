@@ -115,6 +115,16 @@ const SDK = {
                     authorization: "Bearer " + SDK.User.current().token
                 }
             }, cb);
+        },
+
+        makeReady: (orderId, cb) => {
+            SDK.request({
+              method: "POST",
+              url: "/staff/makeReady/" + orderId,
+              headers: {
+                  authorization: "Bearer " + SDK.User.current().token
+                }
+            }, cb);
         }
     },
 

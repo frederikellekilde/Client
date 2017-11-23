@@ -2,43 +2,52 @@ $(document).ready(() => {
 
     SDK.User.loadNav();
     const currentUser = SDK.User.current();
-    const $basketTbody = $("#basket-tbody");
+    const $orderList = $("#order-list");
 
-    if(currentUser) {
+    SDK.Order.findAll((err, orders) => {
+        if (err) throw err;
+/*
+        function isOrderReady(order) {
+            return order.isReady === false;
+        }
 
-        $(".page-header").html(`
-    <h1>Welcome to staff page</h1>
-  `);
+        let unReadyOrders = orders.filter(isOrderReady);
 
-        $(".profile-info").html(`
-    <dl>
-        <dt>Username</dt>
-        <dd>${currentUser.username}</dd>
-        <dt>ID</dt>
-        <dd>${currentUser.user_id}</dd>
-     </dl>
-  `);
+        */
 
+        orders.forEach((order) => {
+            let $items = "";
+            for (let i = 0; i < order.items.length; i++) {
+                $items += order.items[i].itemName + " " + order.items[i].itemPrice + " kr" + "<br>";
+            }
 
-        SDK.Order.findAll((err, orders) => {
-            if (err) throw err;
-            orders.forEach(order => {
+            console.log(order);
 
-                for (let i = 0; i < order.items.length; i++) {
+            const orderHtml = `
+            <div class="col-lg-4 books-container">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Id: ${order.orderId}</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-lg-8">
+                            <dl>
+                                <dt>Ordre oprettet</dt>
+                                <dd>${order.orderTime}</dd>
+                                <dt>Varer</dt>
+                                <dd>${$items}</dd>
+                            </dl>
+                            <button class="btn btn-success orderReady-button" data-item-id="${order.orderId}">Ordre klar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
 
-                    $basketTbody.append(`
-        <tr>
-            <td>${order.orderId}</td>
-            <td>${order.items[i].itemName}</td>
-            <td>${order.items[i].itemPrice + " kr"}</td>
-        </tr>
-      `);
-                }
-            });
+            $orderList.append(orderHtml);
+
         });
 
-    } else {
-        window.location.href = "login.html";
-    }
+
+    });
 
 });
