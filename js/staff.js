@@ -4,23 +4,25 @@ $(document).ready(() => {
     const currentUser = SDK.User.current();
     const $orderList = $("#order-list");
 
-    SDK.Order.findAll((err, orders) => {
-        if (err) throw err;
+    if (currentUser) {
 
-        function isOrderReady(order) {
-            return order.isReady === false;
-        }
+        SDK.Order.findAll((err, orders) => {
+            if (err) throw err;
 
-        let unReadyOrders = orders.filter(isOrderReady);
-        unReadyOrders.forEach((order) => {
-            let $items = "";
-            for (let i = 0; i < order.items.length; i++) {
-                $items += order.items[i].itemName + " " + order.items[i].itemPrice + " kr" + "<br>";
+            function isOrderReady(order) {
+                return order.isReady === false;
             }
 
-            //console.log(order);
+            let unReadyOrders = orders.filter(isOrderReady);
+            unReadyOrders.forEach((order) => {
+                let $items = "";
+                for (let i = 0; i < order.items.length; i++) {
+                    $items += order.items[i].itemName + " " + order.items[i].itemPrice + " kr" + "<br>";
+                }
 
-            const orderHtml = `
+                //console.log(order);
+
+                const orderHtml = `
             <div class="col-lg-4 books-container">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -40,18 +42,22 @@ $(document).ready(() => {
                 </div>
             </div>`;
 
-            $orderList.append(orderHtml);
+                $orderList.append(orderHtml);
 
-        });
-
-        $(".orderReady-button").click(function () {
-            const orderId = $(this).data("order-id");
-            const order = orders.find((order) => order.orderId === orderId);
-            SDK.Order.makeReady(order.orderId, (err) => {
-                if (err) throw err;
-                window.location.reload();
             });
-        });
-    })
+
+            $(".orderReady-button").click(function () {
+                const orderId = $(this).data("order-id");
+                const order = orders.find((order) => order.orderId === orderId);
+                SDK.Order.makeReady(order.orderId, (err) => {
+                    if (err) throw err;
+                    window.location.reload();
+                });
+            });
+        })
+
+    } else {
+        window.location.href = "login.html";
+    }
 
 });

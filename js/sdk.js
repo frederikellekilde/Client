@@ -205,7 +205,6 @@ const SDK = {
                         <li><a href="shop.html">Shop</a></li>
                         <li><a href="checkout.html">Kurv</a></li>
       `);
-
                         $(".navbar-right").html(`
                         <li><a href="my-page.html">Min side</a></li>
                         <li><a href="#" id="logout-link">Log ud</a></li>

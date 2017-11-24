@@ -32,7 +32,7 @@ $(document).ready(() => {
                                   <p><span class="price-amount">${item.itemPrice} kr.</span></p>
                               </div>
                               <div class="col-lg-8 text-right">
-                                  <button class="btn btn-success purchase-button" data-item-id="${item.itemId}">Læg i kurv</button>
+                                  <button class="btn btn-success basket-button" data-item-id="${item.itemId}">Læg i kurv</button>
                               </div>
                           </div>
                       </div>
@@ -43,7 +43,7 @@ $(document).ready(() => {
 
           });
 
-          $(".purchase-button").click(function () {
+          $(".basket-button").click(function () {
               const itemId = $(this).data("item-id");
               const item = items.find((item) => item.itemId === itemId);
               SDK.Item.addToBasket(item);
