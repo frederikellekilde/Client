@@ -7,29 +7,30 @@ $(document).ready(() => {
     const $ordersContainer = $("#orders-container");
 
     if (currentUser) {
+        if (SDK.User.current().isPersonel) {
 
-        SDK.Order.findAll((err, orders) => {
-            if (err) throw err;
+            SDK.Order.findAll((err, orders) => {
+                if (err) throw err;
 
-            if (!orders.length) {
-                $ordersContainer.hide();
-            } else {
-                $noOrdersContainer.hide();
-            }
-
-            function isOrderReady(order) {
-                return order.isReady === false;
-            }
-
-            let unReadyOrders = orders.filter(isOrderReady);
-            unReadyOrders.forEach((order) => {
-                let $items = "";
-                for (let i = 0; i < order.items.length; i++) {
-                    $items += order.items[i].itemName + " " + order.items[i].itemPrice + " kr" + "<br>";
+                if (!orders.length) {
+                    $ordersContainer.hide();
+                } else {
+                    $noOrdersContainer.hide();
                 }
 
-                const orderHtml = `
-                <div class="col-lg-4 books-container">
+                function isOrderReady(order) {
+                    return order.isReady === false;
+                }
+
+                let unReadyOrders = orders.filter(isOrderReady);
+                unReadyOrders.forEach((order) => {
+                    let $items = "";
+                    for (let i = 0; i < order.items.length; i++) {
+                        $items += order.items[i].itemName + " " + order.items[i].itemPrice + " kr" + "<br>";
+                    }
+
+                    const orderHtml = `
+                <div class="col-lg-4 order-container">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h3 class="panel-title">Id: ${order.orderId}</h3>
@@ -48,20 +49,23 @@ $(document).ready(() => {
                     </div>
                 </div>`;
 
-                $orderList.append(orderHtml);
+                    $orderList.append(orderHtml);
 
-            });
-
-            $(".orderReady-button").click(function () {
-                const orderId = $(this).data("order-id");
-                const order = orders.find((order) => order.orderId === orderId);
-                SDK.Order.makeReady(order.orderId, (err) => {
-                    if (err) throw err;
-                    window.location.reload();
                 });
-            });
-        })
 
+                $(".orderReady-button").click(function () {
+                    const orderId = $(this).data("order-id");
+                    const order = orders.find((order) => order.orderId === orderId);
+                    SDK.Order.makeReady(order.orderId, (err) => {
+                        if (err) throw err;
+                        window.location.reload();
+                    });
+                });
+            })
+
+        } else {
+            window.location.href = "my-page.html";
+        }
     } else {
         window.location.href = "login.html";
     }

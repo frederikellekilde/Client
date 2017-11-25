@@ -27,6 +27,10 @@ dd {
     margin: 4px 0 0 0;
 }
 
+.order-container .panel-body {
+    min-height: 242px;
+}
+
 .jumbotron {
     background-image: url("../images/food.jpg");
 }
@@ -46,4 +50,5 @@ dd {
 .btn.btn-default.remove-icon {
     border: none;
 }
+
 
