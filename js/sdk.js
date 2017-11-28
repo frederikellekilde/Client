@@ -67,6 +67,21 @@ const SDK = {
             SDK.Storage.persist("basket", basket);
         },
 
+        addOneToBasket: (itemId) => {
+            let basket = SDK.Storage.load("basket");
+            for (let i = 0; i<basket.length; i++){
+                if (basket[i].item.itemId === itemId){
+                    if (basket[i].count > 0){
+                        basket[i].count++;
+                    }
+                    else{
+                        basket.splice(i, 1);
+                    }
+                }
+            }
+            SDK.Storage.persist("basket", basket);
+        },
+
         findAll: (cb) => {
             SDK.request({
                 method: "GET",

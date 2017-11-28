@@ -71,6 +71,12 @@ $(document).ready(() => {
                 location.reload();
             });
 
+            $(".add-icon").click(function () {
+                const itemId = $(this).data("item-id");
+                SDK.Item.addOneToBasket(itemId);
+                location.reload();
+            });
+
             $("#clear-basket-button").click(() => {
                 SDK.Storage.remove("basket");
                 loadBasket();
