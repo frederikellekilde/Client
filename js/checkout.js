@@ -33,7 +33,7 @@ $(document).ready(() => {
                     </td>
                     <td>${entry.item.itemName}</td>
                     <td>
-                    <button class="btn btn-default remove-icon" data-item-id="${entry.item.itemId}">
+                    <button class="btn btn-default minus-icon" data-item-id="${entry.item.itemId}">
                     <span class="glyphicon glyphicon-minus-sign"></span>
                     </button>
                     ${entry.count}
@@ -66,6 +66,12 @@ $(document).ready(() => {
             loadBasket();
 
             $(".remove-icon").click(function () {
+                const itemId = $(this).data("item-id");
+                SDK.Item.removeItemFromBasket(itemId);
+                location.reload();
+            });
+
+            $(".minus-icon").click(function () {
                 const itemId = $(this).data("item-id");
                 SDK.Item.removeFromBasket(itemId);
                 location.reload();

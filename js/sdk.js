@@ -52,6 +52,21 @@ const SDK = {
             SDK.Storage.persist("basket", basket);
         },
 
+        addOneToBasket: (itemId) => {
+            let basket = SDK.Storage.load("basket");
+            for (let i = 0; i<basket.length; i++){
+                if (basket[i].item.itemId === itemId){
+                    if (basket[i].count > 0){
+                        basket[i].count++;
+                    }
+                    else{
+                        basket.splice(i, 1);
+                    }
+                }
+            }
+            SDK.Storage.persist("basket", basket);
+        },
+
         removeFromBasket: (itemId) => {
             let basket = SDK.Storage.load("basket");
             for (let i = 0; i<basket.length; i++){
@@ -67,14 +82,11 @@ const SDK = {
             SDK.Storage.persist("basket", basket);
         },
 
-        addOneToBasket: (itemId) => {
+        removeItemFromBasket: (itemId) => {
             let basket = SDK.Storage.load("basket");
             for (let i = 0; i<basket.length; i++){
                 if (basket[i].item.itemId === itemId){
-                    if (basket[i].count > 0){
-                        basket[i].count++;
-                    }
-                    else{
+                    if (basket[i].count > 1){
                         basket.splice(i, 1);
                     }
                 }
@@ -134,13 +146,13 @@ const SDK = {
 
         makeReady: (orderId, cb) => {
             SDK.request({
-              method: "POST",
-              url: "/staff/makeReady/" + orderId,
-              data: {
-                  orderId: orderId
-              },
-              headers: {
-                  authorization: "Bearer " + SDK.User.current().token
+                method: "POST",
+                url: "/staff/makeReady/" + orderId,
+                data: {
+                    orderId: orderId
+                },
+                headers: {
+                    authorization: "Bearer " + SDK.User.current().token
                 }
             }, (err, data) => {
                 if (err) return cb(err);
@@ -164,15 +176,15 @@ const SDK = {
                     authorization: "Bearer " + SDK.User.current().token
                 }
             }, (err, data) => {
-              if (err) return cb(err);
-              cb(null, data);
+                if (err) return cb(err);
+                cb(null, data);
 
             });
 
             localStorage.removeItem("user");
             SDK.Storage.remove("basket")
             window.location.href = "index.html";
-            
+
         },
         login: (username, password, cb) => {
             SDK.request({
@@ -234,8 +246,8 @@ const SDK = {
                     $(".navbar-right").html(`
                     <li><a href="login.html">Log ind<span class="sr-only">(current)</span></a></li>
       `);
-                    }
-                    $("#logout-link").click(() => SDK.User.logOut());
+                }
+                $("#logout-link").click(() => SDK.User.logOut());
             });
         }
 
