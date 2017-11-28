@@ -1,16 +1,16 @@
 $(document).ready(() => {
 
-  SDK.User.loadNav();
-  const currentUser = SDK.User.current();
-  const $itemList = $("#item-list");
+    SDK.User.loadNav();
+    const currentUser = SDK.User.current();
+    const $itemList = $("#item-list");
 
-  if(currentUser) {
-      if (!SDK.User.current().isPersonel) {
+    if(currentUser) {
+        if (!SDK.User.current().isPersonel) {
 
-          SDK.Item.findAll((err, items) => {
-              items.forEach((item) => {
+            SDK.Item.findAll((err, items) => {
+                items.forEach((item) => {
 
-                  const itemHtml = `
+                    const itemHtml = `
                   <div class="col-lg-4 item-container">
                       <div class="panel panel-default">
                           <div class="panel-heading">
@@ -40,42 +40,33 @@ $(document).ready(() => {
                       </div>
                   </div>`;
 
-                  $itemList.append(itemHtml);
+                    $itemList.append(itemHtml);
 
-                  });
+                });
 
-                  $(".addToBasket-button").click(function () {
-                      const itemId = $(this).data("item-id");
-                      const item = items.find((item) => item.itemId === itemId);
-                      SDK.Item.addToBasket(item);
-                      $("#purchase-modal").modal("toggle");
-                  });
+                $(".addToBasket-button").click(function () {
+                    const itemId = $(this).data("item-id");
+                    const item = items.find((item) => item.itemId === itemId);
+                    SDK.Item.addToBasket(item);
+                    $("#purchase-modal").modal("toggle");
+                });
+            });
 
-              });
-
-              $("#purchase-modal").on("show.bs.modal", () => {
-                  const basket = SDK.Storage.load("basket");
-                  const $modalTBody = $("#modal-tbody");
-                  let total = 0;
-                  $modalTBody.empty();
-                  basket.forEach((entry) => {
-                      let subtotal = entry.item.itemPrice * entry.count;
-                      total += subtotal;
-                      $modalTBody.append(`
+            $("#purchase-modal").on("show.bs.modal", () => {
+                const basket = SDK.Storage.load("basket");
+                const $modalTBody = $("#modal-tbody");
+                let total = 0;
+                $modalTBody.empty();
+                basket.forEach((entry) => {
+                    let subtotal = entry.item.itemPrice * entry.count;
+                    total += subtotal;
+                    $modalTBody.append(`
                         <tr>
                             <td>
                                <img src="${entry.item.itemUrl}" height="60"/>
                             </td>
                             <td>${entry.item.itemName}</td>
-                            <td>
-                            <button class="btn btn-default remove-icon" data-item-id="${entry.item.itemId}">
-                            <span class="glyphicon glyphicon-minus"></span>
-                            </button>                           
-                            ${entry.count}
-                            <button class="btn btn-default add-icon" data-item-id="${entry.item.itemId}">
-                            <span class="glyphicon glyphicon-plus"></span>
-                            </button>
-                            </td>
+                            <td>${entry.count}</td>
                             <td>${entry.item.itemPrice} kr.</td>
                             <td>${subtotal} kr.</td>
                             <td>
@@ -85,9 +76,9 @@ $(document).ready(() => {
                             </td>
                          </tr>
                     `);
-                  });
+                });
 
-                  $modalTBody.append(`
+                $modalTBody.append(`
                   <tr>
                     <td colspan="3"></td>
                     <td><b>Total</b></td>
@@ -96,27 +87,21 @@ $(document).ready(() => {
                   </tr>
             `);
 
-              $(".remove-icon").click(function () {
-                  const itemId = $(this).data("item-id");
-                  SDK.Item.removeFromBasket(itemId);
-                  $("#purchase-modal").modal("show");
 
-              });
+                $(".remove-icon").click(function () {
+                    const itemId = $(this).data("item-id");
+                    SDK.Item.removeFromBasket(itemId);
+                    $("#purchase-modal").modal("show");
 
-              $(".add-icon").click(function () {
-                  const itemId = $(this).data("item-id");
-                  const item = items.find((item) => item.itemId === itemId);
-                  SDK.Item.addToBasket(item);
-                  location.reload();
-              });
+                });
 
-          });
+            });
 
-      } else {
-          window.location.href = "staff.html";
-      }
-  } else {
-      window.location.href = "login.html";
-  }
+        } else {
+            window.location.href = "staff.html";
+        }
+    } else {
+        window.location.href = "login.html";
+    }
 
 });

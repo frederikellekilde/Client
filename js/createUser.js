@@ -23,7 +23,7 @@ $(document).ready(() => {
                     console.log("Error")
 
                 } else {
-                    window.location.href = "my-page.html";
+                    window.location.href = "login.html";
                 }
             });
 
