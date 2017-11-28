@@ -86,7 +86,7 @@ const SDK = {
             let basket = SDK.Storage.load("basket");
             for (let i = 0; i<basket.length; i++){
                 if (basket[i].item.itemId === itemId){
-                    if (basket[i].count > 1){
+                    if (basket[i].count >= 1){
                         basket.splice(i, 1);
                     }
                 }
