@@ -12,61 +12,59 @@
 <body>
 
 <div class="container">
-
     <div class="row" id="nav-container"></div>
-
-    <div class="row" id="order-alert-container">
-        <div class="col-lg-12">
-            <div class="alert alert-success" role="alert" style="display: none">
-                <strong>Din ordre er blevet placeret</strong>
-            </div>
-        </div>
-    </div>
-
-    <div id="checkout-table-container">
-        <div class="row">
+        <div class="row" id="order-alert-container">
             <div class="col-lg-12">
-
-                <div class="page-header">
-                    <h1>Din kurv</h1>
+                <div class="alert alert-success" role="alert" style="display: none">
+                    <strong>Din ordre er blevet placeret</strong>
                 </div>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th></th>
-                        <th>Navn</th>
-                        <th>Antal</th>
-                        <th>Pris</th>
-                        <th>Total</th>
-                        <th>Fjern</th>
-                    </tr>
-                    </thead>
-                    <tbody id="basket-tbody">
-                    </tbody>
-                </table>
-
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-lg-offset-6 text-right">
-                <button class="btn btn-default btn-lg" id="clear-basket-button">Ryd kurven</button>
-                <button class="btn btn-success btn-lg" id="checkout-button">Bestil</button>
-            </div>
-        </div>
-    </div>
+        <div id="checkout-table-container">
+            <div class="row">
+                <div class="col-lg-12">
 
-    <div id="nothing-in-basket-container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <br />
-                <br />
-                <h2>Kurven er tom</h2>
-                <br />
-                <br />
+                    <div class="page-header">
+                        <h1>Din kurv</h1>
+                    </div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>Navn</th>
+                            <th>Antal</th>
+                            <th>Pris</th>
+                            <th>Total</th>
+                            <th>Fjern</th>
+                        </tr>
+                        </thead>
+                        <tbody id="basket-tbody">
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-offset-6 text-right">
+                    <button class="btn btn-default btn-lg" id="clear-basket-button">Ryd kurven</button>
+                    <button class="btn btn-success btn-lg" id="checkout-button">Bestil</button>
+                </div>
             </div>
         </div>
-    </div>
+
+        <div id="nothing-in-basket-container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <br />
+                    <br />
+                    <h2>Kurven er tom</h2>
+                    <br />
+                    <br />
+                </div>
+            </div>
+        </div>
 
 </div>
 

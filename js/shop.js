@@ -33,7 +33,7 @@ $(document).ready(() => {
                                       <p><span class="price-amount">${item.itemPrice} kr.</span></p>
                                   </div>
                                   <div class="col-lg-8 text-right">
-                                      <button class="btn btn-success basket-button" data-item-id="${item.itemId}">Læg i kurv</button>
+                                      <button class="btn btn-success addToBasket-button" data-item-id="${item.itemId}">Læg i kurv</button>
                                   </div>
                               </div>
                           </div>
@@ -44,7 +44,7 @@ $(document).ready(() => {
 
                   });
 
-                  $(".basket-button").click(function () {
+                  $(".addToBasket-button").click(function () {
                       const itemId = $(this).data("item-id");
                       const item = items.find((item) => item.itemId === itemId);
                       SDK.Item.addToBasket(item);
@@ -52,12 +52,14 @@ $(document).ready(() => {
                   });
               });
 
-              $("#purchase-modal").on("shown.bs.modal", () => {
+              $("#purchase-modal").on("show.bs.modal", () => {
                   const basket = SDK.Storage.load("basket");
                   const $modalTBody = $("#modal-tbody");
+                  let total = 0;
                   $modalTBody.empty();
                   basket.forEach((entry) => {
-                      const total = entry.item.itemPrice * entry.count;
+                      let subtotal = entry.item.itemPrice * entry.count;
+                      total += subtotal;
                       $modalTBody.append(`
                         <tr>
                             <td>
@@ -66,7 +68,7 @@ $(document).ready(() => {
                             <td>${entry.item.itemName}</td>
                             <td>${entry.count}</td>
                             <td>${entry.item.itemPrice} kr.</td>
-                            <td>${total} kr.</td>
+                            <td>${subtotal} kr.</td>
                             <td>
                             <button class="btn btn-default remove-icon" data-item-id="${entry.item.itemId}">
                                 <span class="glyphicon glyphicon-remove"></span>
@@ -74,13 +76,22 @@ $(document).ready(() => {
                             </td>
                          </tr>
                     `);
+                  });
 
-              });
+                  $modalTBody.append(`
+                  <tr>
+                    <td colspan="3"></td>
+                    <td><b>Total</b></td>
+                    <td>${total} kr.</td>
+                    <td></td>
+                  </tr>
+            `);
+
 
               $(".remove-icon").click(function () {
                   const itemId = $(this).data("item-id");
                   SDK.Item.removeFromBasket(itemId);
-                  $("#purchase-modal").modal("toggle");
+                  $("#purchase-modal").modal("show");
 
               });
 
