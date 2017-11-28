@@ -3,7 +3,7 @@ $(document).ready(() => {
   SDK.User.loadNav();
 
   const currentUser = SDK.User.current();
-  const $modalTbody = $("#basket-tbody");
+  const $basketTbody = $("#basket-tbody");
   const $nothingInBasketContainer = $("#nothing-in-basket-container");
   const $checkoutTableContainer = $("#checkout-table-container");
 
@@ -22,30 +22,37 @@ $(document).ready(() => {
                     $nothingInBasketContainer.hide();
                 }
 
-
                 basket.forEach(entry => {
                     let subtotal = entry.item.itemPrice * entry.count;
                     total += subtotal;
 
-                    $modalTbody.append(`
-                <tr>
-                    <td>
-                        <img src="${entry.item.itemUrl}" height="120"/>
-                    </td>
-                    <td>${entry.item.itemName}</td>
-                    <td>${entry.count}</td>
-                    <td>${entry.item.itemPrice} kr.</td>
-                    <td>${subtotal} kr.</td>
-                    <td>
-                    <button class="btn btn-default remove-icon" data-item-id="${entry.item.itemId}">
-                        <span class="glyphicon glyphicon-remove"></span>
-                    </button>
-                    </td>
-                </tr>
-            `);
+                    $basketTbody.append(`
+                        <tr>
+                          <td>
+                            <img src="${entry.item.itemUrl}" height="120"/>
+                           </td>
+                           <td>${entry.item.itemName}</td>
+                           <td>
+                           <button class="btn btn-default remove-icon" data-item-id="${entry.item.itemId}">
+                           <span class="glyphicon glyphicon-minus"></span>
+                           </button>                           
+                           ${entry.count}
+                           <button class="btn btn-default add-icon" data-item-id="${entry.item.itemId}">
+                           <span class="glyphicon glyphicon-plus"></span>
+                           </button>
+                           </td>
+                           <td>${entry.item.itemPrice} kr.</td>
+                           <td>${subtotal} kr.</td>
+                           <td>
+                           <button class="btn btn-default remove-icon" data-item-id="${entry.item.itemId}">
+                               <span class="glyphicon glyphicon-remove"></span>
+                           </button>
+                           </td>
+                       </tr>
+                    `);
                 });
 
-                $modalTbody.append(`
+                $basketTbody.append(`
                   <tr>
                     <td colspan="3"></td>
                     <td><b>Total</b></td>
@@ -61,6 +68,13 @@ $(document).ready(() => {
             $(".remove-icon").click(function () {
                 const itemId = $(this).data("item-id");
                 SDK.Item.removeFromBasket(itemId);
+                location.reload();
+            });
+
+            $(".add-icon").click(function () {
+                const itemId = $(this).data("item-id");
+                const item = items.find((item) => item.itemId === itemId);
+                SDK.Item.addToBasket(item);
                 location.reload();
             });
 

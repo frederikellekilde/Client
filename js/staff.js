@@ -6,6 +6,14 @@ $(document).ready(() => {
     const $noOrdersContainer = $("#no-orders-container");
     const $ordersContainer = $("#orders-container");
 
+    function showItems(items) {
+        let $items = "";
+        items.forEach(item => {
+            $items += item.itemName + " " + item.itemPrice + " kr" + "<br>";
+        });
+        return $items;
+    }
+
     if (currentUser) {
         if (SDK.User.current().isPersonel) {
 
@@ -25,11 +33,6 @@ $(document).ready(() => {
                 let unReadyOrders = orders.filter(isOrderReady);
                 unReadyOrders.forEach((order) => {
 
-                    let $items = "";
-                    for (let i = 0; i < order.items.length; i++) {
-                        $items += order.items[i].itemName + " " + order.items[i].itemPrice + " kr" + "<br>";
-                    }
-
                     const orderHtml = `
                     <div class="col-lg-4 order-container">
                         <div class="panel panel-default">
@@ -42,7 +45,7 @@ $(document).ready(() => {
                                         <dt>Ordre oprettet</dt>
                                         <dd>${order.orderTime}</dd>
                                         <dt>Varer</dt>
-                                        <dd>${$items}</dd>
+                                        <dd>${showItems(order.items)}</dd>
                                     </dl>
                                     <button class="btn btn-success orderReady-button" data-order-id="${order.orderId}">Ordre klar</button>
                                 </div>

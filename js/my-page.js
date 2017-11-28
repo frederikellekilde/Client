@@ -10,8 +10,8 @@ $(document).ready(() => {
       if (!SDK.User.current().isPersonel) {
 
           $(".page-header").html(`
-        <h1>Velkommen ${currentUser.username}</h1>
-      `);
+            <h1>Velkommen ${currentUser.username}</h1>
+          `);
 
           SDK.Order.findMine((err, orders) => {
               if (err) throw err;
