@@ -11,34 +11,34 @@ $(document).ready(() => {
                 items.forEach((item) => {
 
                     const itemHtml = `
-                  <div class="col-lg-4 item-container">
-                      <div class="panel panel-default">
-                          <div class="panel-heading">
-                              <h3 class="panel-title">${item.itemName}</h3>
-                          </div>
-                          <div class="panel-body">
-                              <div class="col-lg-8">
-                                <img src="${item.itemUrl}"/>
+                      <div class="col-lg-4 item-container">
+                          <div class="panel panel-default">
+                              <div class="panel-heading">
+                                  <h3 class="panel-title">${item.itemName}</h3>
                               </div>
-                              <div class="col-lg-4">
-                                <dl>
-                                  <dt>Beskrivelse</dt>
-                                  <dd>${item.itemDescription}</dd>
-                                </dl>
-                              </div>
-                          </div>
-                          <div class="panel-footer">
-                              <div class="row">
-                                  <div class="col-lg-4 price-label">
-                                      <p><span class="price-amount">${item.itemPrice} kr.</span></p>
+                              <div class="panel-body">
+                                  <div class="col-lg-8">
+                                    <img src="${item.itemUrl}"/>
                                   </div>
-                                  <div class="col-lg-8 text-right">
-                                      <button class="btn btn-success addToBasket-button" data-item-id="${item.itemId}">Læg i kurv</button>
+                                  <div class="col-lg-4">
+                                    <dl>
+                                      <dt>Beskrivelse</dt>
+                                      <dd>${item.itemDescription}</dd>
+                                    </dl>
                                   </div>
                               </div>
+                              <div class="panel-footer">
+                                  <div class="row">
+                                      <div class="col-lg-4 price-label">
+                                          <p><span class="price-amount">${item.itemPrice} kr.</span></p>
+                                      </div>
+                                      <div class="col-lg-8 text-right">
+                                          <button class="btn btn-success addToBasket-button" data-item-id="${item.itemId}">Læg i kurv</button>
+                                      </div>
+                                  </div>
+                              </div>
                           </div>
-                      </div>
-                  </div>`;
+                      </div>`;
 
                     $itemList.append(itemHtml);
 
@@ -96,14 +96,14 @@ $(document).ready(() => {
 
                 $(".remove-icon").click(function () {
                     const itemId = $(this).data("item-id");
-                    SDK.Item.removeItemFromBasket(itemId);
+                    SDK.Item.removeFromBasket(itemId);
                     $("#purchase-modal").modal("show");
 
                 });
 
                 $(".minus-icon").click(function () {
                     const itemId = $(this).data("item-id");
-                    SDK.Item.removeFromBasket(itemId);
+                    SDK.Item.removeOneFromBasket(itemId);
                     $("#purchase-modal").modal("show");
 
                 });
@@ -113,8 +113,6 @@ $(document).ready(() => {
                     SDK.Item.addOneToBasket(itemId);
                     $("#purchase-modal").modal("show");
                 });
-
-
 
             });
 

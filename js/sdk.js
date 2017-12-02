@@ -54,12 +54,27 @@ const SDK = {
 
         addOneToBasket: (itemId) => {
             let basket = SDK.Storage.load("basket");
-            for (let i = 0; i<basket.length; i++){
-                if (basket[i].item.itemId === itemId){
-                    if (basket[i].count > 0){
+            for (let i = 0; i < basket.length; i++) {
+                if (basket[i].item.itemId === itemId) {
+                    if (basket[i].count > 0) {
                         basket[i].count++;
                     }
-                    else{
+                    else {
+                        basket.splice(i, 1);
+                    }
+                }
+            }
+            SDK.Storage.persist("basket", basket);
+        },
+
+        removeOneFromBasket: (itemId) => {
+            let basket = SDK.Storage.load("basket");
+            for (let i = 0; i < basket.length; i++) {
+                if (basket[i].item.itemId === itemId) {
+                    if (basket[i].count > 1) {
+                        basket[i].count--;
+                    }
+                    else {
                         basket.splice(i, 1);
                     }
                 }
@@ -69,24 +84,9 @@ const SDK = {
 
         removeFromBasket: (itemId) => {
             let basket = SDK.Storage.load("basket");
-            for (let i = 0; i<basket.length; i++){
-                if (basket[i].item.itemId === itemId){
-                    if (basket[i].count > 1){
-                        basket[i].count--;
-                    }
-                    else{
-                        basket.splice(i, 1);
-                    }
-                }
-            }
-            SDK.Storage.persist("basket", basket);
-        },
-
-        removeItemFromBasket: (itemId) => {
-            let basket = SDK.Storage.load("basket");
-            for (let i = 0; i<basket.length; i++){
-                if (basket[i].item.itemId === itemId){
-                    if (basket[i].count >= 1){
+            for (let i = 0; i < basket.length; i++) {
+                if (basket[i].item.itemId === itemId) {
+                    if (basket[i].count >= 1) {
                         basket.splice(i, 1);
                     }
                 }
@@ -103,6 +103,23 @@ const SDK = {
                 }
             }, cb);
         },
+
+        create: (itemName, itemDescription, itemPrice, itemUrl, cb) => {
+            SDK.request({
+                    method: "POST",
+                    url: "/staff/addItem",
+                    data: {
+                        itemName: itemName,
+                        itemDescription: itemDescription,
+                        itemPrice: itemPrice,
+                        itemUrl: itemUrl
+                    },
+                    headers: {
+                        Authorization: "Bearer " + SDK.User.current().token
+                    }
+                }
+            , cb);
+        },
     },
 
     Order: {
@@ -110,10 +127,9 @@ const SDK = {
             SDK.request({
                 method: "POST",
                 url: "/user/createOrder",
-                data:
-                    {
-                        User_userId: SDK.User.current().user_id,
-                        items: items
+                data: {
+                    User_userId: SDK.User.current().user_id,
+                    items: items
                     },
                 headers: {
                     authorization: "Bearer " + SDK.User.current().token
@@ -165,6 +181,7 @@ const SDK = {
         current: () => {
             return JSON.parse(localStorage.getItem("user"));
         },
+
         logOut: (user_id, cb) => {
             SDK.request({
                 data:{
@@ -198,7 +215,6 @@ const SDK = {
 
                 //On login-error
                 if (err) return cb(err);
-                //console.log('sdk test', data);
                 localStorage.setItem("user", JSON.stringify(data));
 
                 cb(null, data);
@@ -238,6 +254,8 @@ const SDK = {
       `);
                     } else {
                         $(".navbar-right").html(`
+                        <li><a href="staff.html">Se ordrer</a></li>
+                        <li><a href="addItem.html">Tilføj produkt</a></li>
                         <li><a href="#" id="logout-link">Log ud</a></li>
       `);
                     }
